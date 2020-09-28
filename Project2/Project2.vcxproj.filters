@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\GameScenes">
+      <UniqueIdentifier>{5940dda0-c848-4337-9343-a90b8e8c4e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameScenes">
+      <UniqueIdentifier>{f17e58a3-03aa-40df-9e78-ab4ed8547f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Meshes">
+      <UniqueIdentifier>{66f0674c-2abb-43e4-9492-a6ce674322d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Meshes">
+      <UniqueIdentifier>{c265cd8d-9333-4479-8af4-6a9ca8233359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Actors">
+      <UniqueIdentifier>{a32eb8ea-9c9b-430e-a49e-c4ecf108091c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{48aa57a3-e560-4895-a833-8895e931ec79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{d87df1df-b5ba-4cca-a68a-c357c8cceef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actors">
+      <UniqueIdentifier>{25c9d695-65ac-40c1-b596-42dfb487866a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{f177bff1-126c-40ea-8ca5-3ad5ebc0fd5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{d49c134b-0276-4097-970b-2da52496caec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Basic">
+      <UniqueIdentifier>{5a669a4e-6cb2-4388-b797-d5df0ded62f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Phong">
+      <UniqueIdentifier>{6a330637-76c2-4eec-aeb2-04938fd5c585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Text">
+      <UniqueIdentifier>{5b7a0c04-2cd2-4552-988a-8f22b7545cef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Model">
+      <UniqueIdentifier>{eb34d8bf-e733-49c7-871e-2f395e9529c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\SkyBox">
+      <UniqueIdentifier>{1cf78455-c72f-4d6e-92fc-f21bbc763e11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Reflection">
+      <UniqueIdentifier>{24fa38ac-be6c-4bc9-bb17-6bc832c225bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Fog">
+      <UniqueIdentifier>{129e96b1-1350-434f-bed4-09cf2077ee5a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CGameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainMenuScene.cpp">
+      <Filter>Source Files\GameScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayScene.cpp">
+      <Filter>Source Files\GameScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CSphere.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="CPyramid.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlane.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="CActor.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="CShaderLoader.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CAudio.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextLabel.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="CInput.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkybox.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CCube.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CGameManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainMenuScene.h">
+      <Filter>Header Files\GameScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayScene.h">
+      <Filter>Header Files\GameScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CSphere.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="CPyramid.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlane.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="CActor.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextLabel.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CAudio.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="CInput.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="CShaderLoader.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelMesh.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkybox.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CCube.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\RimLighting.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\Shaders\Basic.fs">
+      <Filter>Resource Files\Basic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Basic.vs">
+      <Filter>Resource Files\Basic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Basic-Normal.fs">
+      <Filter>Resource Files\Basic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Basic-Normal.vs">
+      <Filter>Resource Files\Basic</Filter>
+    </None>
+    <None Include="Resources\Shaders\Blinn-Phong.fs">
+      <Filter>Resource Files\Phong</Filter>
+    </None>
+    <None Include="Resources\Shaders\Phong - Ambient.fs">
+      <Filter>Resource Files\Phong</Filter>
+    </None>
+    <None Include="Resources\Shaders\Phong - Diffuse.fs">
+      <Filter>Resource Files\Phong</Filter>
+    </None>
+    <None Include="Resources\Shaders\Phong - Specular.fs">
+      <Filter>Resource Files\Phong</Filter>
+    </None>
+    <None Include="Resources\Shaders\Text.fs">
+      <Filter>Resource Files\Text</Filter>
+    </None>
+    <None Include="Resources\Shaders\Text.vs">
+      <Filter>Resource Files\Text</Filter>
+    </None>
+    <None Include="Resources\Shaders\Model.vs">
+      <Filter>Resource Files\Model</Filter>
+    </None>
+    <None Include="Resources\Shaders\Model.fs">
+      <Filter>Resource Files\Model</Filter>
+    </None>
+    <None Include="Resources\Shaders\skybox.fs">
+      <Filter>Resource Files\SkyBox</Filter>
+    </None>
+    <None Include="Resources\Shaders\skybox.vs">
+      <Filter>Resource Files\SkyBox</Filter>
+    </None>
+    <None Include="Resources\Shaders\Reflection.fs">
+      <Filter>Resource Files\Reflection</Filter>
+    </None>
+    <None Include="Resources\Shaders\Reflection.vs">
+      <Filter>Resource Files\Reflection</Filter>
+    </None>
+    <None Include="Resources\Shaders\Fog.fs">
+      <Filter>Resource Files\Fog</Filter>
+    </None>
+    <None Include="Resources\Shaders\Fog.vs">
+      <Filter>Resource Files\Fog</Filter>
+    </None>
+  </ItemGroup>
+</Project>

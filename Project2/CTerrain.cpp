@@ -252,7 +252,7 @@ void CTerrain::BuildVBIB()
 		}
 	}
 
-	std::vector<unsigned int> indices(numFaces * 3); // 3 indices per face
+	std::vector<GLuint> indices(numFaces * 3); // 3 indices per face
 
 	// Iterate over each quad and compute indices.
 	int k = 0;

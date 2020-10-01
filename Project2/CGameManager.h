@@ -21,6 +21,9 @@
 #include "CCamera.h"
 #include "CInput.h"
 #include "CShaderLoader.h"
+#include "CGeometryModel.h"
+#include "CTessModel.h"
+#include "CTerrain.h"
 
 // Meshes
 #include "CSphere.h"

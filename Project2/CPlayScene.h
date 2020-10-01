@@ -4,6 +4,8 @@
 #include "CCamera.h"
 #include "CInput.h"
 #include "CTextLabel.h"
+#include "CGeometryModel.h"
+#include "CTessModel.h"
 
 // Actors
 #include "CActor.h"
@@ -33,6 +35,8 @@ private:
 	// Programs
 	GLint program;
 	GLint programSkybox;
+	GLuint geomProgram;
+	GLuint tessProgram;
 
 	// Audio
 	FMOD::System* audioSystem;
@@ -41,6 +45,8 @@ private:
 	ESceneManager* currentScene;
 	CCamera* gameCamera;
 	CInput* gameInput;
+	CGeometryModel* geomModel;
+	CTessModel* tessModel;
 
 	// Meshes
 	CPyramid* actorPyramid;

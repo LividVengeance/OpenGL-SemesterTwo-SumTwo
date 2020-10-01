@@ -64,6 +64,12 @@
     <Filter Include="Resource Files\Fog">
       <UniqueIdentifier>{129e96b1-1350-434f-bed4-09cf2077ee5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Geometry">
+      <UniqueIdentifier>{142f9937-2126-474d-998f-60dead7ef07b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Tesselation">
+      <UniqueIdentifier>{05d63eb4-db6a-4c1f-a2f4-bb0e5300396b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CGameManager.cpp">
@@ -113,6 +119,15 @@
     </ClCompile>
     <ClCompile Include="CCube.cpp">
       <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="CGeometryModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTessModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTerrain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +184,15 @@
     </ClInclude>
     <ClInclude Include="CCube.h">
       <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="CGeometryModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTessModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTerrain.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +252,33 @@
     </None>
     <None Include="Resources\Shaders\Fog.vs">
       <Filter>Resource Files\Fog</Filter>
+    </None>
+    <None Include="Resources\Shaders\geometry.fs">
+      <Filter>Resource Files\Geometry</Filter>
+    </None>
+    <None Include="Resources\Shaders\geometry.gs">
+      <Filter>Resource Files\Geometry</Filter>
+    </None>
+    <None Include="Resources\Shaders\geometry.vs">
+      <Filter>Resource Files\Geometry</Filter>
+    </None>
+    <None Include="Resources\Shaders\tesQuadPatch.fs">
+      <Filter>Resource Files\Tesselation</Filter>
+    </None>
+    <None Include="Resources\Shaders\tessellaction.vs">
+      <Filter>Resource Files\Tesselation</Filter>
+    </None>
+    <None Include="Resources\Shaders\tessellaction.fs">
+      <Filter>Resource Files\Tesselation</Filter>
+    </None>
+    <None Include="Resources\Shaders\tesTriangle.fs">
+      <Filter>Resource Files\Tesselation</Filter>
+    </None>
+    <None Include="Resources\Shaders\tesTrianglePatch.fs">
+      <Filter>Resource Files\Tesselation</Filter>
+    </None>
+    <None Include="Resources\Shaders\tesQuad.fs">
+      <Filter>Resource Files\Tesselation</Filter>
     </None>
   </ItemGroup>
 </Project>

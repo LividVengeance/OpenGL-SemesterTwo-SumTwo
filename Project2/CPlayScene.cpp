@@ -13,6 +13,13 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	programSkybox = CShaderLoader::CreateProgram("Resources/Shaders/skybox.vs",
 		"Resources/Shaders/skybox.fs");
 
+	geomProgram = CShaderLoader::CreateProgram("Resources/Shaders/geometry.fs",
+		"Resources/Shaders/geometry.fs", "Resources/Shaders/geometry.gs");
+
+	tessProgram = CShaderLoader::CreateProgram("Resources/Shaders/tessellaction.vs",
+		"Resources/Shaders/tesTriangle.fs", "Resources/Shaders/tesQuad.fs", 
+		"Resources/Shaders/tesQuadPatch.fs");
+
 	// Generate Texte
 	const char* fileLocation = "Resources/Textures/BackgroundSprite.png";
 	TextureGen(fileLocation, &actorTex);
@@ -22,6 +29,13 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 
 	const char* waterFileLocation = "Resources/Textures/WaterSprite.png";
 	TextureGen(waterFileLocation, &actorWaterTex);
+
+	// Geometry Model
+	geomModel = new CGeometryModel(geomProgram, gameCamera);
+	geomModel->SetPosition(glm::vec3(6.0f, 1.0f, 0.0f));
+
+	tessModel = new CTessModel(tessProgram, gameCamera);
+	tessModel->SetPostion(glm::vec3(6.0f, -2.0f, 0.0f));
 
 	// Creates Mesh
 	actorPyramid = new CPyramid();
@@ -108,7 +122,9 @@ void CPlayScene::Render()
 	// Draw actors
 
 	waterActor->Render();
-	
+
+	tessModel->Render();
+	geomModel->Render();
 
 	// Disable blending
 	glDisable(GL_BLEND);

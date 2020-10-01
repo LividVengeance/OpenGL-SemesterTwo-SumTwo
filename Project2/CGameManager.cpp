@@ -33,7 +33,7 @@ CGameManager::CGameManager(int argc, char** argv)
 
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(Utils::SCR_WIDTH, Utils::SCR_HEIGHT);
-	glutCreateWindow("OpenGL Exercises - GD1P04");
+	glutCreateWindow("OpenGL Summative Two - GD2P04");
 
 	// Sets up all GL function callbacks based on pc hardware
 	if (glewInit() != GLEW_OK)

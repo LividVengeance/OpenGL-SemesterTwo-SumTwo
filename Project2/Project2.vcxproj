@@ -148,6 +148,7 @@
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCube.cpp" />
     <ClCompile Include="CGameManager.cpp" />
+    <ClCompile Include="CGeometryModel.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CMainMenuScene.cpp" />
     <ClCompile Include="CObject.cpp" />
@@ -156,6 +157,8 @@
     <ClCompile Include="CPyramid.cpp" />
     <ClCompile Include="CSkybox.cpp" />
     <ClCompile Include="CSphere.cpp" />
+    <ClCompile Include="CTerrain.cpp" />
+    <ClCompile Include="CTessModel.cpp" />
     <ClCompile Include="CTextLabel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CShaderLoader.cpp" />
@@ -166,6 +169,7 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCube.h" />
     <ClInclude Include="CGameManager.h" />
+    <ClInclude Include="CGeometryModel.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CMainMenuScene.h" />
     <ClInclude Include="CObject.h" />
@@ -174,6 +178,8 @@
     <ClInclude Include="CPyramid.h" />
     <ClInclude Include="CSkybox.h" />
     <ClInclude Include="CSphere.h" />
+    <ClInclude Include="CTerrain.h" />
+    <ClInclude Include="CTessModel.h" />
     <ClInclude Include="CTextLabel.h" />
     <ClInclude Include="CShaderLoader.h" />
     <ClInclude Include="Model.h" />
@@ -188,6 +194,9 @@
     <None Include="Resources\Shaders\Blinn-Phong.fs" />
     <None Include="Resources\Shaders\Fog.fs" />
     <None Include="Resources\Shaders\Fog.vs" />
+    <None Include="Resources\Shaders\geometry.fs" />
+    <None Include="Resources\Shaders\geometry.gs" />
+    <None Include="Resources\Shaders\geometry.vs" />
     <None Include="Resources\Shaders\Model.fs" />
     <None Include="Resources\Shaders\Model.vs" />
     <None Include="Resources\Shaders\Phong - Ambient.fs" />
@@ -198,6 +207,12 @@
     <None Include="Resources\Shaders\RimLighting.fs" />
     <None Include="Resources\Shaders\skybox.fs" />
     <None Include="Resources\Shaders\skybox.vs" />
+    <None Include="Resources\Shaders\tesQuad.fs" />
+    <None Include="Resources\Shaders\tesQuadPatch.fs" />
+    <None Include="Resources\Shaders\tessellaction.fs" />
+    <None Include="Resources\Shaders\tessellaction.vs" />
+    <None Include="Resources\Shaders\tesTriangle.fs" />
+    <None Include="Resources\Shaders\tesTrianglePatch.fs" />
     <None Include="Resources\Shaders\Text.fs" />
     <None Include="Resources\Shaders\Text.vs" />
   </ItemGroup>

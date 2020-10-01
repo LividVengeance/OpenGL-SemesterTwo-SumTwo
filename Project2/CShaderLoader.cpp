@@ -31,6 +31,39 @@ GLuint CShaderLoader::CreateProgram(const char* vertexShaderFilename, const char
 	return program;
 }
 
+GLuint CShaderLoader::CreateProgram(const char* vertexShaderFilename, const char* fragmentShaderFilename, 
+	const char* geometryShaderFilename)
+{
+	GLuint program = glCreateProgram();
+
+	GLint vertID = CreateShader(GL_VERTEX_SHADER, vertexShaderFilename);
+	GLint fragID = CreateShader(GL_FRAGMENT_SHADER, fragmentShaderFilename);
+
+	//std::string geometry_shader_code = glm::ReadShader(geometryShaderFilename);
+	//GLuint geomID = CreateShader(GL_GEOMETRY_SHADER, geometry_shader_code, "geometry shader");
+
+	GLuint geomID = CreateShader(GL_GEOMETRY_SHADER, geometryShaderFilename);
+
+	
+
+	glAttachShader(program, vertID);
+	glAttachShader(program, fragID);
+	glAttachShader(program, geomID);
+
+	glLinkProgram(program);
+
+	// Check for link errors
+	int link_result = 0;
+	glGetProgramiv(program, GL_LINK_STATUS, &link_result);
+	if (link_result == GL_FALSE)
+	{
+		std::string programName = vertexShaderFilename + *fragmentShaderFilename;
+		PrintErrorDetails(false, program, programName.c_str());
+		return 0;
+	}
+	return program;
+}
+
 GLuint CShaderLoader::CreateShader(GLenum shaderType, const char* shaderName)
 {
 
@@ -54,6 +87,32 @@ GLuint CShaderLoader::CreateShader(GLenum shaderType, const char* shaderName)
 		return 0;
 	}
 	return shaderID;
+}
+
+GLuint CShaderLoader::CreateProgram(const char* VertexShaderFilename, const char* FragmentShaderFilename,
+	const char* TessControlShaderFilename, const char* TessEvalShaderFilename)
+{
+	//std::string tessControl_shader_code = ReadShader(TessControlShaderFilename);
+	//std::string tessEval_shader_code = ReadShader(TessEvalShaderFilename);
+	//GLuint tessControl_shader = CreateShader(GL_TESS_CONTROL_SHADER, tessControl_shader_code, "tess
+	//	Control shader");
+	//	GLuint tessEval_shader = CreateShader(GL_TESS_EVALUATION_SHADER, tessEval_shader_code, "tess
+	//		Evalution shader");
+	//		glAttachShader(program, tessControl_shader);
+	//glAttachShader(program, tessEval_shader);
+	GLuint program = glCreateProgram();
+
+	GLint vertID = CreateShader(GL_VERTEX_SHADER, VertexShaderFilename);
+	GLint fragID = CreateShader(GL_FRAGMENT_SHADER, FragmentShaderFilename);
+	GLuint tessControl_shader = CreateShader(GL_TESS_CONTROL_SHADER, TessControlShaderFilename);
+	GLuint tessEval_shader = CreateShader(GL_TESS_EVALUATION_SHADER, TessEvalShaderFilename);
+
+	glAttachShader(program, vertID);
+	glAttachShader(program, fragID);
+	glAttachShader(program, tessControl_shader);
+	glAttachShader(program, tessEval_shader);
+
+	return(program);
 }
 
 std::string CShaderLoader::ReadShaderFile(const char* filename)

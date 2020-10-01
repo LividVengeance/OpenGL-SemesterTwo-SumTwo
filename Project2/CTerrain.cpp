@@ -10,9 +10,12 @@ namespace
 	};
 }
 
-CTerrain::CTerrain(CCamera* _camera)
+CTerrain::CTerrain(GLint* _program, GLuint* _VAO, CCamera* _camera, GLuint* _texture)
 {
 	camera = _camera;
+	VAO = _VAO;
+	program = _program;
+	texture = _texture;
 }
 
 CTerrain::~CTerrain()
@@ -164,40 +167,31 @@ void CTerrain::Smooth()
 
 void CTerrain::Draw()
 {
-	//md3dDevice->IASetInputLayout(InputLayout::PosNormalTex);
-	//
-	//int stride = sizeof(TerrainVertex);
-	//int offset = 0;
-	//md3dDevice->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
-	//md3dDevice->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
-	//
-	//glm::mat4 view = camera->CameraView();//GetCamera().view();
-	//glm::mat4 proj = camera->CameraProjection();//GetCamera().proj();
-	//
-	////D3DXMATRIX WVP = world * view * proj;
-	//glm::mat4 MVP = view * proj;
-	//
-	//
-	//mfxWVPVar->SetMatrix((float*)&WVP);
-	//mfxWorldVar->SetMatrix((float*)&world);
-	//
-	//mfxLayer0Var->SetResource(mLayer0);
-	//mfxLayer1Var->SetResource(mLayer1);
-	//mfxLayer2Var->SetResource(mLayer2);
-	//mfxLayer3Var->SetResource(mLayer3);
-	//mfxLayer4Var->SetResource(mLayer4);
-	//mfxBlendMapVar->SetResource(mBlendMap);
-	//
-	//D3D10_TECHNIQUE_DESC techDesc;
-	//mTech->GetDesc(&techDesc);
-	//
-	//for (UINT i = 0; i < techDesc.Passes; ++i)
-	//{
-	//	ID3D10EffectPass* pass = mTech->GetPassByIndex(i);
-	//	pass->Apply(0);
-	//
-	//	md3dDevice->DrawIndexed(numFaces * 3, 0, 0);
-	//}
+	glUseProgram(*program);
+	glBindVertexArray(*VAO);		// Bind VAO
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, *texture);
+	glUniform1i(glGetUniformLocation(*program, "tex"), 0);
+
+	//GLuint modelLoc = glGetUniformLocation(*program, "model");
+	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(objModelMatrix));
+
+	GLuint projection = glGetUniformLocation(*program, "proj");
+	glUniformMatrix4fv(projection, 1, GL_FALSE, value_ptr(camera->CameraProjection()));
+
+	GLuint view = glGetUniformLocation(*program, "view");
+	glUniformMatrix4fv(view, 1, GL_FALSE, value_ptr(camera->CameraView()));
+
+	GLuint camPos = glGetUniformLocation(*program, "camPos");
+	glUniform3fv(camPos, 1, value_ptr(camera->GetCamPos()));
+
+	glDrawElements(GL_TRIANGLES, indiceCount, GL_UNSIGNED_INT, 0); // Drawing Background
+	glBindVertexArray(0);
+	glUseProgram(0);
 }
 
 void CTerrain::BuildVBIB()
@@ -272,16 +266,18 @@ void CTerrain::BuildVBIB()
 		}
 	}
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	GLuint EBO, VBO;
+
+	glGenVertexArrays(1, VAO);
+	glBindVertexArray(*VAO);
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

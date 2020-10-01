@@ -26,7 +26,7 @@ public:
 		float CellSpacing;
 	};
 	
-	CTerrain(CCamera* _camera);
+	CTerrain(GLint* _program, GLuint* _VAO, CCamera* _camera, GLuint* _texture);
 	~CTerrain();
 
 	float Width() const;
@@ -41,11 +41,12 @@ private:
 	InitInfo initInfo;
 
 	CCamera* camera;
-
+	GLuint* texture;
 	int numVertices;
 	int numFaces;
 
-	GLuint VAO, VBO, EBO;
+	GLint* program;
+	GLuint* VAO;
 	float indiceCount;
 
 	std::vector<float> heightmap;

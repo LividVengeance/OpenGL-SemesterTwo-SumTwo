@@ -13,12 +13,12 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	programSkybox = CShaderLoader::CreateProgram("Resources/Shaders/skybox.vs",
 		"Resources/Shaders/skybox.fs");
 
-	geomProgram = CShaderLoader::CreateProgram("Resources/Shaders/geometry.fs",
-		"Resources/Shaders/geometry.fs", "Resources/Shaders/geometry.gs");
-
-	tessProgram = CShaderLoader::CreateProgram("Resources/Shaders/tessellaction.vs",
-		"Resources/Shaders/tesTriangle.fs", "Resources/Shaders/tesQuad.fs", 
-		"Resources/Shaders/tesQuadPatch.fs");
+	//geomProgram = CShaderLoader::CreateProgram("Resources/Shaders/geometry.fs",
+	//	"Resources/Shaders/geometry.fs", "Resources/Shaders/geometry.gs");
+	//
+	//tessProgram = CShaderLoader::CreateProgram("Resources/Shaders/tessellaction.vs",
+	//	"Resources/Shaders/tesTriangle.fs", "Resources/Shaders/tesQuad.fs", 
+	//	"Resources/Shaders/tesQuadPatch.fs");
 
 	// Generate Texte
 	const char* fileLocation = "Resources/Textures/BackgroundSprite.png";
@@ -31,10 +31,10 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	TextureGen(waterFileLocation, &actorWaterTex);
 
 	// Geometry Model
-	geomModel = new CGeometryModel(geomProgram, gameCamera);
+	geomModel = new CGeometryModel(program, gameCamera);
 	geomModel->SetPosition(glm::vec3(6.0f, 1.0f, 0.0f));
 
-	tessModel = new CTessModel(tessProgram, gameCamera);
+	tessModel = new CTessModel(program, gameCamera);
 	tessModel->SetPostion(glm::vec3(6.0f, -2.0f, 0.0f));
 
 	// Creates Mesh
@@ -42,6 +42,8 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	actorCube = new CCube(1.0f);
 	actorMeshTest = new CCube(1.1f);
 	actorPlane = new CPlane(10.0f, 10.0f);
+
+	terrainMesh = new CTerrain(&program, gameCamera, &actorCubeTex);
 
 	// Create Game Actors
 	actorCubeTwoObj = new CObject(&program, actorCube->GetVAO(), actorCube->GetIndiceCount(), gameCamera, &actorTex);
@@ -78,20 +80,23 @@ void CPlayScene::Render()
 
 	// Enabling Culling
 	glFrontFace(GL_CCW);
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	//glEnable(GL_CULL_FACE);
 
 	restartLabel->Render(); // Call before scissor test
+	
 
 	// Enables and declares scissor rectangle
 	glEnable(GL_SCISSOR_TEST);
 	glScissor(0, 50, 1200, 500);
+
 
 	if (isWireFrame)
 	{
 		glPolygonMode(GL_FRONT, GL_LINE);
 	}
 
+	
 
 	// Stencil set up
 	glEnable(GL_STENCIL_TEST);
@@ -100,37 +105,38 @@ void CPlayScene::Render()
 	glStencilMask(0xFF);
 	// Draw first actor
 	
-	actorCubeTwoObj->Render();
+	//actorCubeTwoObj->Render();
 
 	// The second pass
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF); 
 	glStencilMask(0x00);
 	// Draw second actor
 
-	actorCubeObj->Render();
+	//actorCubeObj->Render();
 
 	// Disable stencil
 	glStencilMask(0x00); //disable writing to stencil mask
 	glDisable(GL_STENCIL_TEST); // Disable stencil test
 	glStencilMask(0xFF); // Enable writing again for next time
 
-	quadObj->Render();
+	//quadObj->Render();
 
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// Draw actors
 
-	waterActor->Render();
+	//waterActor->Render();
 
-	tessModel->Render();
-	geomModel->Render();
+	//tessModel->Render();
+	//geomModel->Render();
 
 	// Disable blending
 	glDisable(GL_BLEND);
 
 
 	gameSkybox->Render();
+	terrainMesh->Render();
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 
@@ -177,6 +183,7 @@ void CPlayScene::Update(GLfloat* deltaTime, ESceneManager* _currentScene)
 	waterActor->Update();
 	quadObj->Update();
 	actorCubeObj->Update();
+	terrainMesh->Update();
 
 	// Resets every thing in game scene
 	if (gameInput->getKeyState('r') || gameInput->getKeyState('R'))

@@ -21,7 +21,22 @@ CActor::~CActor()
 
 void CActor::MoveInput(GLfloat deltaTime, CInput* gameInput)
 {
-	
+	if (gameInput->getKeyState('W') || gameInput->getKeyState('w'))
+	{
+		objPosition.x = (1 * speed) * deltaTime;
+	}
+	if (gameInput->getKeyState('S') || gameInput->getKeyState('s'))
+	{
+		objPosition.x = -(1 * speed) * deltaTime;
+	}
+	if (gameInput->getKeyState('A') || gameInput->getKeyState('a'))
+	{
+		objPosition.z = (1 * speed) * deltaTime;
+	}
+	if (gameInput->getKeyState('D') || gameInput->getKeyState('d'))
+	{
+		objPosition.z = -(1 * speed) * deltaTime;
+	}
 }
 
 void CActor::TextureGen(const char* textureLocation, GLuint* texture)

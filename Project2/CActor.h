@@ -21,4 +21,7 @@ public:
 	GLint program;
 
 	FMOD::System* audioSystem;
+
+private:
+	float speed = 2.0f;
 };

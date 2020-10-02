@@ -10,12 +10,27 @@ namespace
 	};
 }
 
-CTerrain::CTerrain(GLint* _program, GLuint* _VAO, CCamera* _camera, GLuint* _texture)
+CTerrain::CTerrain(GLint* _program, CCamera* _camera, GLuint* _texture)//, std::string _FileName)
 {
 	camera = _camera;
-	VAO = _VAO;
 	program = _program;
 	texture = _texture;
+	HeightmapFilename = "Resources/Textures/coastMountain513.raw";
+
+	objPosition = vec3(0.0f, -30.0f, 1.0f);
+	objRotaion = vec3(0.0f, 0.0f, 1.0f);
+	objScale = vec3(1.0f, 1.0f, 1.0f);
+
+	objScaleAmount = 1.0f;
+	objAngleRotation = 0.0f;
+
+	numVertices = NumRows * NumCols;
+	numFaces = (NumRows - 1) * (NumCols - 1) * 2;
+
+	LoadHeightMap();
+	Smooth();
+	BuildVBIB();
+	Update();
 }
 
 CTerrain::~CTerrain()
@@ -24,19 +39,19 @@ CTerrain::~CTerrain()
 
 float CTerrain::Width() const
 {
-	return((initInfo.NumRows -1) * initInfo.CellSpacing);
+	return((NumCols - 1) * CellSpacing);
 }
 
 float CTerrain::Depth() const
 {
-	return((initInfo.NumCols - 1) * initInfo.CellSpacing);
+	return((NumRows- 1) * CellSpacing);
 }
 
 float CTerrain::GetHeight(float x, float z) const
 {
 	// Transform from terrain local space to "cell" space.
-	float c = (x + 0.5f * Width()) / initInfo.CellSpacing;
-	float d = (z - 0.5f * Depth()) / -initInfo.CellSpacing;
+	float c = (x + 0.5f * Width()) / CellSpacing;
+	float d = (z - 0.5f * Depth()) / -CellSpacing;
 
 	// Get the row and column we are in.
 	int row = (int)floorf(d);
@@ -47,10 +62,10 @@ float CTerrain::GetHeight(float x, float z) const
 	//  | /|
 	//  |/ |
 	// C*--*D
-	float A = heightmap[row * initInfo.NumCols + col];
-	float B = heightmap[row * initInfo.NumCols + col + 1];
-	float C = heightmap[(row + 1) * initInfo.NumCols + col];
-	float D = heightmap[(row + 1) * initInfo.NumCols + col + 1];
+	float A = heightmap[row * NumCols + col];
+	float B = heightmap[row * NumCols + col + 1];
+	float C = heightmap[(row + 1) * NumCols + col];
+	float D = heightmap[(row + 1) * NumCols + col + 1];
 
 	// Where we are relative to the cell.
 	float s = c - (float)col;
@@ -71,25 +86,14 @@ float CTerrain::GetHeight(float x, float z) const
 	}
 }
 
-void CTerrain::Init(const InitInfo& _initInfo)
-{
-	
-}
-
-void CTerrain::SetDirectionToSun(const glm::vec3& v)
-{
-	glm::vec4 temp(v.x, v.y, v.z, 0.0f);
-	//mfxDirToSunVar->SetFloatVector((float*)temp);
-}
-
 void CTerrain::LoadHeightMap()
 {
 	// A height for each vertex
-	std::vector<unsigned char> in(initInfo.NumRows * initInfo.NumCols);
+	std::vector<unsigned char> in(NumRows * NumCols);
 
 	// Open the file.
 	std::ifstream inFile;
-	inFile.open(initInfo.HeightmapFilename.c_str(), std::ios_base::binary);
+	inFile.open(HeightmapFilename.c_str(), std::ios_base::binary);
 
 	if (inFile)
 	{
@@ -101,10 +105,10 @@ void CTerrain::LoadHeightMap()
 	}
 
 	// Copy the array data into a float array, and scale and offset the heights.
-	heightmap.resize(initInfo.NumRows * initInfo.NumCols, 0);
-	for (int i = 0; i < initInfo.NumRows * initInfo.NumCols; ++i)
+	heightmap.resize(NumRows * NumCols, 0);
+	for (UINT i = 0; i < NumRows * NumCols; ++i)
 	{
-		heightmap[i] = (float)in[i] * initInfo.HeightScale + initInfo.HeightOffset;
+		heightmap[i] = (float)in[i] * HeightScale + HeightOffset;
 	}
 }
 
@@ -112,8 +116,8 @@ bool CTerrain::IsInBounds(int i, int j)
 {
 	// True if ij are valid indices; false otherwise.
 	return
-		i >= 0 && i < initInfo.NumRows &&
-		j >= 0 && j < initInfo.NumCols;
+		i >= 0 && i < NumRows &&
+		j >= 0 && j < NumCols;
 }
 
 float CTerrain::Average(int i, int j)
@@ -134,13 +138,13 @@ float CTerrain::Average(int i, int j)
 	float avg = 0.0f;
 	float num = 0.0f;
 
-	for (int m = i - 1; m <= i + 1; ++m)
+	for (UINT m = i - 1; m <= i + 1; ++m)
 	{
-		for (int n = j - 1; n <= j + 1; ++n)
+		for (UINT n = j - 1; n <= j + 1; ++n)
 		{
 			if (IsInBounds(m, n))
 			{
-				avg += heightmap[m * initInfo.NumCols + n];
+				avg += heightmap[m * NumCols + n];
 				num += 1.0f;
 			}
 		}
@@ -153,11 +157,11 @@ void CTerrain::Smooth()
 {
 	std::vector<float> dest(heightmap.size());
 
-	for (int i = 0; i < initInfo.NumRows; ++i)
+	for (UINT i = 0; i < NumRows; ++i)
 	{
-		for (int j = 0; j < initInfo.NumCols; ++j)
+		for (UINT j = 0; j < NumCols; ++j)
 		{
-			dest[i * initInfo.NumCols + j] = Average(i, j);
+			dest[i * NumCols + j] = Average(i, j);
 		}
 	}
 
@@ -165,10 +169,10 @@ void CTerrain::Smooth()
 	heightmap = dest;
 }
 
-void CTerrain::Draw()
+void CTerrain::Render()
 {
 	glUseProgram(*program);
-	glBindVertexArray(*VAO);		// Bind VAO
+	glBindVertexArray(VAO);		// Bind VAO
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -177,8 +181,8 @@ void CTerrain::Draw()
 	glBindTexture(GL_TEXTURE_2D, *texture);
 	glUniform1i(glGetUniformLocation(*program, "tex"), 0);
 
-	//GLuint modelLoc = glGetUniformLocation(*program, "model");
-	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(objModelMatrix));
+	GLuint modelLoc = glGetUniformLocation(*program, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(objModelMatrix));
 
 	GLuint projection = glGetUniformLocation(*program, "proj");
 	glUniformMatrix4fv(projection, 1, GL_FALSE, value_ptr(camera->CameraProjection()));
@@ -189,7 +193,7 @@ void CTerrain::Draw()
 	GLuint camPos = glGetUniformLocation(*program, "camPos");
 	glUniform3fv(camPos, 1, value_ptr(camera->GetCamPos()));
 
-	glDrawElements(GL_TRIANGLES, indiceCount, GL_UNSIGNED_INT, 0); // Drawing Background
+	glDrawElements(GL_TRIANGLES, indiceCount, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	glUseProgram(0);
 }
@@ -197,41 +201,40 @@ void CTerrain::Draw()
 void CTerrain::BuildVBIB()
 {
 	std::vector<TerrainVertex> vertices(numVertices);
-	//float vertices[numVertices];
 
-	float halfWidth = (initInfo.NumCols - 1) * initInfo.CellSpacing * 0.5f;
-	float halfDepth = (initInfo.NumRows - 1) * initInfo.CellSpacing * 0.5f;
+	float halfWidth = (NumCols - 1) * CellSpacing * 0.5f;
+	float halfDepth = (NumRows - 1) * CellSpacing * 0.5f;
 
-	float du = 1.0f / (initInfo.NumCols - 1);
-	float dv = 1.0f / (initInfo.NumRows - 1);
-	for (int i = 0; i < initInfo.NumRows; ++i)
+	float du = 1.0f / (NumCols - 1);
+	float dv = 1.0f / (NumRows - 1);
+	for (UINT i = 0; i < NumRows; ++i)
 	{
-		float z = halfDepth - i * initInfo.CellSpacing;
-		for (int j = 0; j < initInfo.NumCols; ++j)
+		float z = halfDepth - i * CellSpacing;
+		for (UINT j = 0; j < NumCols; ++j)
 		{
-			float x = -halfWidth + j * initInfo.CellSpacing;
+			float x = -halfWidth + j * CellSpacing;
 
-			float y = heightmap[i * initInfo.NumCols + j];
-			vertices[i * initInfo.NumCols + j].pos = glm::vec3(x, y, z);
-			vertices[i * initInfo.NumCols + j].normal = glm::vec3(0.0f, 1.0f, 0.0f);
+			float y = heightmap[i * NumCols + j];
+			vertices[i * NumCols + j].pos = glm::vec3(x, y, z);
+			vertices[i * NumCols + j].normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
 			// Stretch texture over grid.
-			vertices[i * initInfo.NumCols + j].texC.x = j * du;
-			vertices[i * initInfo.NumCols + j].texC.y = i * dv;
+			vertices[i * NumCols + j].texC.x = j * du;
+			vertices[i * NumCols + j].texC.y = i * dv;
 		}
 	}
 
 	// Estimate normals for interior nodes using central difference.
-	float invTwoDX = 1.0f / (2.0f * initInfo.CellSpacing);
-	float invTwoDZ = 1.0f / (2.0f * initInfo.CellSpacing);
-	for (int i = 2; i < initInfo.NumRows - 1; ++i)
+	float invTwoDX = 1.0f / (2.0f * CellSpacing);
+	float invTwoDZ = 1.0f / (2.0f * CellSpacing);
+	for (int i = 2; i < NumRows - 1; ++i)
 	{
-		for (int j = 2; j < initInfo.NumCols - 1; ++j)
+		for (int j = 2; j < NumCols - 1; ++j)
 		{
-			float t = heightmap[(i - 1) * initInfo.NumCols + j];
-			float b = heightmap[(i + 1) * initInfo.NumCols + j];
-			float l = heightmap[i * initInfo.NumCols + j - 1];
-			float r = heightmap[i * initInfo.NumCols + j + 1];
+			float t = heightmap[(i - 1) * NumCols + j];
+			float b = heightmap[(i + 1) * NumCols + j];
+			float l = heightmap[i * NumCols + j - 1];
+			float r = heightmap[i * NumCols + j + 1];
 
 			glm::vec3 tanZ(0.0f, (t - b) * invTwoDZ, 1.0f);
 			glm::vec3 tanX(1.0f, (r - l) * invTwoDX, 0.0f);
@@ -239,28 +242,28 @@ void CTerrain::BuildVBIB()
 			glm::vec3 N;
 			//D3DXVec3Cross(&N, &tanZ, &tanX);
 			N = glm::cross(tanZ, tanX);
-			glm::normalize(&N); //D3DXVec3Normalize(&N, &N);
+			N = glm::normalize(N); //D3DXVec3Normalize(&N, &N);
 			
 
-			vertices[i * initInfo.NumCols + j].normal = N;
+			vertices[i * NumCols + j].normal = N;
 		}
 	}
 
-	std::vector<GLuint> indices(numFaces * 3); // 3 indices per face
+	std::vector<DWORD> indices(numFaces * 3); // 3 indices per face
 
 	// Iterate over each quad and compute indices.
 	int k = 0;
-	for (int i = 0; i < initInfo.NumRows - 1; ++i)
+	for (UINT i = 0; i < NumRows - 1; ++i)
 	{
-		for (int j = 0; j < initInfo.NumCols - 1; ++j)
+		for (UINT j = 0; j < NumCols - 1; ++j)
 		{
-			indices[k] = i * initInfo.NumCols + j;
-			indices[k + 1] = i * initInfo.NumCols + j + 1;
-			indices[k + 2] = (i + 1) * initInfo.NumCols + j;
+			indices[k] = i * NumCols + j;
+			indices[k + 1] = i * NumCols + j + 1;
+			indices[k + 2] = (i + 1) * NumCols + j;
 
-			indices[k + 3] = (i + 1) * initInfo.NumCols + j;
-			indices[k + 4] = i * initInfo.NumCols + j + 1;
-			indices[k + 5] = (i + 1) * initInfo.NumCols + j + 1;
+			indices[k + 3] = (i + 1) * NumCols + j;
+			indices[k + 4] = i * NumCols + j + 1;
+			indices[k + 5] = (i + 1) * NumCols + j + 1;
 
 			k += 6; // next quad
 		}
@@ -268,44 +271,36 @@ void CTerrain::BuildVBIB()
 
 	GLuint EBO, VBO;
 
-	glGenVertexArrays(1, VAO);
-	glBindVertexArray(*VAO);
-
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(TerrainVertex), &vertices[0], GL_STATIC_DRAW);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(
-		0,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		8 * sizeof(GLfloat),	// Stride of the single vertex (pos + color)
-		(GLvoid*)0);			// Offset from beginning of Vertex
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(TerrainVertex), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(
-		1,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		8 * sizeof(GLfloat),				// Stride of the single vertex (pos + color)
-		(GLvoid*)(3 * sizeof(GLfloat)));	// Offset from beginning of Vertex
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(TerrainVertex), (void*)(3 * sizeof(TerrainVertex)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(
-		2,
-		2,
-		GL_FLOAT,
-		GL_FALSE,
-		8 * sizeof(GLfloat),
-		(GLvoid*)(6 * sizeof(GLfloat)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(TerrainVertex), (void*)(6 * sizeof(TerrainVertex)));
 	glEnableVertexAttribArray(2);
+
+	//indiceCount = sizeof(indices) / sizeof(GLuint);
+	indiceCount = indices.size();
+}
+
+void CTerrain::Update()
+{
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(), objPosition);
+	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), glm::radians(objAngleRotation), objRotaion);
+	glm::mat4 scaleMatrix = glm::scale(glm::mat4(), objScale * objScaleAmount);
+
+	// Create model matrix to combine them
+	objModelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 }

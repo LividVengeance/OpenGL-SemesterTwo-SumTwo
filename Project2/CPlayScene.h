@@ -6,6 +6,7 @@
 #include "CTextLabel.h"
 #include "CGeometryModel.h"
 #include "CTessModel.h"
+#include "CTerrain.h"
 
 // Actors
 #include "CActor.h"
@@ -54,6 +55,7 @@ private:
 	CPlane* actorPlane;
 	CCube* actorMeshTest;
 	CSkybox* gameSkybox;
+	CTerrain* terrainMesh;
 
 	// Objects
 	CObject* actorCubeObj;

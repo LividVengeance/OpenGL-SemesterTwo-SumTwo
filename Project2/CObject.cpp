@@ -8,9 +8,9 @@ CObject::CObject(GLint* _program, GLuint* _VAO, int _indiceCount, CCamera* _game
 	gameCamera = _gameCamera;
 	texture = _texture;
 
-	objPosition = vec3(0.0f, 0.0f, 1.0f);
-	objRotaion = vec3(0.0f, 0.0f, 1.0f);
-	objScale = vec3(1.0f, 1.0f, 1.0f);
+	objPosition = glm::vec3(0.0f, 0.0f, 1.0f);
+	objRotaion = glm::vec3(0.0f, 0.0f, 1.0f);
+	objScale = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	objScaleAmount = 1.0f;
 	objAngleRotation = 0.0f;

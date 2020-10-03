@@ -10,7 +10,6 @@
 #include "gtc/type_ptr.hpp"
 #include "Utilities.h"
 
-
 using namespace glm;
 
 class CCamera
@@ -34,6 +33,7 @@ public:
 
 	void MoveCamera(GLfloat deltaTime, bool moveRight);
 	void CameraRadius(float newRadius);
+	void FollowActor(glm::vec3 _objPosition);
 
 private:
 	float halfScreenWidth = Utils::SCR_WIDTH * 0.5f;
@@ -43,6 +43,8 @@ private:
 	vec3 camPos;
 	vec3 camLookDir;
 	vec3 camUpDir;
+
+	glm::vec3 objPosition;
 
 	mat4 proj;
 	mat4 view;

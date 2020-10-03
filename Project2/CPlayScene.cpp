@@ -10,12 +10,15 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	program = CShaderLoader::CreateProgram("Resources/Shaders/Fog.vs",
 		"Resources/Shaders/Fog.fs");
 
+	programs = CShaderLoader::CreateProgram("Resources/Shaders/Basic.vs",
+		"Resources/Shaders/Basic.fs");
+
 	programSkybox = CShaderLoader::CreateProgram("Resources/Shaders/skybox.vs",
 		"Resources/Shaders/skybox.fs");
 
-	//geomProgram = CShaderLoader::CreateProgram("Resources/Shaders/geometry.fs",
-	//	"Resources/Shaders/geometry.fs", "Resources/Shaders/geometry.gs");
-	//
+	geomProgram = CShaderLoader::CreateProgram("Resources/Shaders/geometry.fs",
+		"Resources/Shaders/geometry.fs", "Resources/Shaders/geometry.gs");
+	
 	//tessProgram = CShaderLoader::CreateProgram("Resources/Shaders/tessellaction.vs",
 	//	"Resources/Shaders/tesTriangle.fs", "Resources/Shaders/tesQuad.fs", 
 	//	"Resources/Shaders/tesQuadPatch.fs");
@@ -39,11 +42,14 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 
 	// Creates Mesh
 	actorPyramid = new CPyramid();
-	actorCube = new CCube(1.0f);
+	actorCube = new CCube(0.1f);
 	actorMeshTest = new CCube(1.1f);
 	actorPlane = new CPlane(10.0f, 10.0f);
 
-	terrainMesh = new CTerrain(&program, gameCamera, &actorCubeTex);
+	terrainMesh = new CTerrain(&programs, gameCamera, &actorCubeTex);
+
+	gameActor = new CActor(&programs, actorCube->GetVAO(), actorCube->GetIndiceCount(), 
+		gameCamera, &actorTex, audioSystem);
 
 	// Create Game Actors
 	actorCubeTwoObj = new CObject(&program, actorCube->GetVAO(), actorCube->GetIndiceCount(), gameCamera, &actorTex);
@@ -137,6 +143,7 @@ void CPlayScene::Render()
 
 	gameSkybox->Render();
 	terrainMesh->Render();
+	gameActor->Render();
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 
@@ -150,24 +157,6 @@ void CPlayScene::Update(GLfloat* deltaTime, ESceneManager* _currentScene)
 	currentScene = _currentScene;
 	gameCamera->Update(*deltaTime);
 
-	if (gameInput->getKeyState('d') || gameInput->getKeyState('D') || gameInput->getClick(0))
-	{
-		gameCamera->MoveCamera(*deltaTime, 1);
-	}
-	if (gameInput->getKeyState('a') || gameInput->getKeyState('A') || gameInput->getClick(1))
-	{
-		gameCamera->MoveCamera(*deltaTime, 0);
-	}
-	if (gameInput->getKeyState('w') || gameInput->getKeyState('W'))
-	{
-		gameCamera->CameraRadius(0.01);
-	}
-	if (gameInput->getKeyState('s') || gameInput->getKeyState('S'))
-	{
-		gameCamera->CameraRadius(-0.01);
-	}
-
-	
 	// Wire Frame Check
 	if (gameInput->getKeyState('q') || gameInput->getKeyState('Q'))
 	{
@@ -184,6 +173,8 @@ void CPlayScene::Update(GLfloat* deltaTime, ESceneManager* _currentScene)
 	quadObj->Update();
 	actorCubeObj->Update();
 	terrainMesh->Update();
+	gameActor->Update(*deltaTime, gameInput, terrainMesh);
+	gameCamera->FollowActor(gameActor->objPosition);
 
 	// Resets every thing in game scene
 	if (gameInput->getKeyState('r') || gameInput->getKeyState('R'))

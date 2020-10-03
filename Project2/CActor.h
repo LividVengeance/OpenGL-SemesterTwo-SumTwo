@@ -3,6 +3,7 @@
 #include "CSphere.h"
 #include "CShaderLoader.h"
 #include "CAudio.h"
+#include "CTerrain.h"
 
 #include <map>
 
@@ -13,7 +14,7 @@ public:
 	~CActor();
 
 	void MoveInput(GLfloat deltaTime, CInput* gameInput);
-
+	void Update(GLfloat deltaTime, CInput* gameInput, CTerrain* _terrain);
 	void TextureGen(const char* textureLocation, GLuint* texture);
 
 	CSphere* actorSphere;

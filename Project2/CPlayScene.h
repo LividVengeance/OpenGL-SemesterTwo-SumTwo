@@ -35,9 +35,10 @@ private:
 
 	// Programs
 	GLint program;
+	GLint programs;
 	GLint programSkybox;
-	GLuint geomProgram;
-	GLuint tessProgram;
+	GLint geomProgram;
+	GLint tessProgram;
 
 	// Audio
 	FMOD::System* audioSystem;
@@ -62,6 +63,7 @@ private:
 	CObject* actorCubeTwoObj;
 	CObject* waterActor;
 	CObject* quadObj;
+	CActor* gameActor;
 
 	// Textures
 	GLuint actorTex;

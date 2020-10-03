@@ -86,7 +86,7 @@ void CPlayScene::Render()
 
 	// Enabling Culling
 	glFrontFace(GL_CCW);
-	glCullFace(GL_FRONT);
+	glCullFace(GL_BACK);
 	//glEnable(GL_CULL_FACE);
 
 	restartLabel->Render(); // Call before scissor test
@@ -205,3 +205,5 @@ void CPlayScene::TextureGen(const char* textureLocation, GLuint* texture)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
+
+

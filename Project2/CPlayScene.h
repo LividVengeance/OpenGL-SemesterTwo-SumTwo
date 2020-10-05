@@ -50,16 +50,13 @@ private:
 
 	// Meshes
 	CCube* actorCube;
-	CPlane* actorPlane;
 	CSkybox* gameSkybox;
 	CTerrain* terrainMesh;
 
 	// Objects
-	CObject* waterActor;
 	CActor* gameActor;
 
 	// Textures
 	GLuint actorTex;
-	GLuint actorWaterTex;
 	GLuint actorCubeTex;
 };

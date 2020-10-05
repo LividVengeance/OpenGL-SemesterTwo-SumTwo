@@ -30,16 +30,11 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	const char* cubeFileLocation = "Resources/Textures/frogChair.jpg";
 	TextureGen(cubeFileLocation, &actorCubeTex);
 
-	const char* waterFileLocation = "Resources/Textures/WaterSprite.png";
-	TextureGen(waterFileLocation, &actorWaterTex);
-
 	// Creates Mesh
 	actorCube = new CCube(3.0f);
-	actorPlane = new CPlane(10.0f, 10.0f);
 	terrainMesh = new CTerrain(&programs, gameCamera, &actorCubeTex);
 
 	// Create Game Actors
-	//waterActor = new CObject(&programs, actorPlane->GetVAO(), actorPlane->GetIndiceCount(), gameCamera, &actorWaterTex);
 	gameActor = new CActor(&programs, actorCube->GetVAO(), actorCube->GetIndiceCount(), gameCamera, &actorTex, audioSystem);
 	geomModel = new CGeometryModel(geomProgram, gameCamera);
 
@@ -75,20 +70,15 @@ void CPlayScene::Render()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Draw actors
-	//waterActor->Render();
-
-	// Disable blending
-	//glDisable(GL_BLEND);
-
-
 	geomModel->Render();
 	gameSkybox->Render();
 	terrainMesh->Render();
-
 	gameActor->Render();
 
-
 	glPolygonMode(GL_FRONT, GL_FILL);
+
+	// Disable blending
+	glDisable(GL_BLEND);
 
 	glBindVertexArray(0);		// Unbinding VAO
 	glDisable(GL_SCISSOR_TEST);	// Disables scissor rectangle
@@ -98,9 +88,6 @@ void CPlayScene::Render()
 void CPlayScene::Update(GLfloat* deltaTime, ESceneManager* _currentScene)
 {
 	currentScene = _currentScene;
-	//gameCamera->FollowActor(geomModel->objPosition);
-	//geomModel->objPosition = glm::vec3(0.0f, -1.0f, 0.0f);
-
 	gameCamera->Update(*deltaTime);
 
 	// Wire Frame Check

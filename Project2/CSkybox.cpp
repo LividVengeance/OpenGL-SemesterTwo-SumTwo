@@ -144,7 +144,7 @@ void CSkybox::Render()
 
 void CSkybox::Update()
 {
-	mat4 model = scale(mat4(), vec3(200.0f, 200.0f, 200.0f));
+	mat4 model = scale(mat4(), vec3(2000.0f, 2000.0f, 2000.0f));
 	MVP = gameCamera->CameraProjection() * gameCamera->CameraView() * model;
 }
 

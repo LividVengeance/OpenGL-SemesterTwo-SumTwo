@@ -23,11 +23,11 @@ void CActor::MoveInput(GLfloat deltaTime, CInput* gameInput)
 {
 	if (gameInput->getKeyState('W') || gameInput->getKeyState('w'))
 	{
-		objPosition.x += (1 * speed) * deltaTime;
+		objPosition.x -= (1 * speed) * deltaTime;
 	}
 	if (gameInput->getKeyState('S') || gameInput->getKeyState('s'))
 	{
-		objPosition.x += -(1 * speed) * deltaTime;
+		objPosition.x += (1 * speed) * deltaTime;
 	}
 	if (gameInput->getKeyState('A') || gameInput->getKeyState('a'))
 	{
@@ -35,7 +35,7 @@ void CActor::MoveInput(GLfloat deltaTime, CInput* gameInput)
 	}
 	if (gameInput->getKeyState('D') || gameInput->getKeyState('d'))
 	{
-		objPosition.z += -(1 * speed) * deltaTime;
+		objPosition.z -= (1 * speed) * deltaTime;
 	}
 }
 
@@ -44,6 +44,7 @@ void CActor::Update(GLfloat deltaTime, CInput* gameInput, CTerrain* _terrain)
 	CObject::Update();
 
 	MoveInput(deltaTime, gameInput);
+
 	objPosition.y = _terrain->GetHeight(objPosition.x, objPosition.z) - 30.0f;
 }
 

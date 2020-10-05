@@ -5,7 +5,6 @@
 #include "CInput.h"
 #include "CTextLabel.h"
 #include "CGeometryModel.h"
-#include "CTessModel.h"
 #include "CTerrain.h"
 
 // Actors
@@ -18,6 +17,7 @@
 #include "CPlane.h"
 #include "Model.h"
 #include "CCube.h"
+
 
 class CPlayScene
 {
@@ -38,7 +38,6 @@ private:
 	GLint programs;
 	GLint programSkybox;
 	GLint geomProgram;
-	GLint tessProgram;
 
 	// Audio
 	FMOD::System* audioSystem;
@@ -48,28 +47,19 @@ private:
 	CCamera* gameCamera;
 	CInput* gameInput;
 	CGeometryModel* geomModel;
-	CTessModel* tessModel;
 
 	// Meshes
-	CPyramid* actorPyramid;
 	CCube* actorCube;
 	CPlane* actorPlane;
-	CCube* actorMeshTest;
 	CSkybox* gameSkybox;
 	CTerrain* terrainMesh;
 
 	// Objects
-	CObject* actorCubeObj;
-	CObject* actorCubeTwoObj;
 	CObject* waterActor;
-	CObject* quadObj;
 	CActor* gameActor;
 
 	// Textures
 	GLuint actorTex;
 	GLuint actorWaterTex;
 	GLuint actorCubeTex;
-
-	// Text Labels
-	CTextLabel* restartLabel;
 };

@@ -34,18 +34,12 @@ GLuint CShaderLoader::CreateProgram(const char* vertexShaderFilename, const char
 GLuint CShaderLoader::CreateProgram(const char* vertexShaderFilename, const char* fragmentShaderFilename, 
 	const char* geometryShaderFilename)
 {
-	GLuint program = glCreateProgram();
-
-	GLint vertID = CreateShader(GL_VERTEX_SHADER, vertexShaderFilename);
-	GLint fragID = CreateShader(GL_FRAGMENT_SHADER, fragmentShaderFilename);
-
-	//std::string geometry_shader_code = glm::ReadShader(geometryShaderFilename);
-	//GLuint geomID = CreateShader(GL_GEOMETRY_SHADER, geometry_shader_code, "geometry shader");
-
+	GLuint vertID = CreateShader(GL_VERTEX_SHADER, vertexShaderFilename);
+	GLuint fragID = CreateShader(GL_FRAGMENT_SHADER, fragmentShaderFilename);
 	GLuint geomID = CreateShader(GL_GEOMETRY_SHADER, geometryShaderFilename);
 
+	GLuint program = glCreateProgram();
 	
-
 	glAttachShader(program, vertID);
 	glAttachShader(program, fragID);
 	glAttachShader(program, geomID);
@@ -66,7 +60,6 @@ GLuint CShaderLoader::CreateProgram(const char* vertexShaderFilename, const char
 
 GLuint CShaderLoader::CreateShader(GLenum shaderType, const char* shaderName)
 {
-
 	GLint shaderID = glCreateShader(shaderType);
 
 	std::string shaderString = ReadShaderFile(shaderName);

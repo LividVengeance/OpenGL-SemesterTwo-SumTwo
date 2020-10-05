@@ -4,18 +4,25 @@
 class CGeometryModel
 {
 public:
-	CGeometryModel(GLuint _program, CCamera* _camera);
+	CGeometryModel(GLint _program, CCamera* _camera);
 	~CGeometryModel();
 
 	void Render();
 	void SetPosition(glm::vec3 _newPos);
+	void Update();
+
+	// Object Location
+	vec3 objPosition;
+	vec3 objScale;
+	vec3 objRotaion;
+	float objAngleRotation;
+	mat4 objModelMatrix;
 
 private:
 	CCamera* camera;
-	GLuint program;
+	GLint program;
 
 	GLuint VAO, VBO;
 
 	glm::vec3 position;
 };
-

@@ -24,5 +24,5 @@ public:
 	FMOD::System* audioSystem;
 
 private:
-	float speed = 2.0f;
+	float speed = 20.0f;
 };

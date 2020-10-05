@@ -16,7 +16,7 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	programSkybox = CShaderLoader::CreateProgram("Resources/Shaders/skybox.vs",
 		"Resources/Shaders/skybox.fs");
 
-	geomProgram = CShaderLoader::CreateProgram("Resources/Shaders/geometry.fs",
+	geomProgram = CShaderLoader::CreateProgram("Resources/Shaders/geometry.vs",
 		"Resources/Shaders/geometry.fs", "Resources/Shaders/geometry.gs");
 	
 	//tessProgram = CShaderLoader::CreateProgram("Resources/Shaders/tessellaction.vs",
@@ -33,47 +33,18 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	const char* waterFileLocation = "Resources/Textures/WaterSprite.png";
 	TextureGen(waterFileLocation, &actorWaterTex);
 
-	// Geometry Model
-	geomModel = new CGeometryModel(program, gameCamera);
-	geomModel->SetPosition(glm::vec3(6.0f, 1.0f, 0.0f));
-
-	tessModel = new CTessModel(program, gameCamera);
-	tessModel->SetPostion(glm::vec3(6.0f, -2.0f, 0.0f));
-
 	// Creates Mesh
-	actorPyramid = new CPyramid();
-	actorCube = new CCube(0.1f);
-	actorMeshTest = new CCube(1.1f);
+	actorCube = new CCube(3.0f);
 	actorPlane = new CPlane(10.0f, 10.0f);
-
 	terrainMesh = new CTerrain(&programs, gameCamera, &actorCubeTex);
 
-	gameActor = new CActor(&programs, actorCube->GetVAO(), actorCube->GetIndiceCount(), 
-		gameCamera, &actorTex, audioSystem);
-
 	// Create Game Actors
-	actorCubeTwoObj = new CObject(&program, actorCube->GetVAO(), actorCube->GetIndiceCount(), gameCamera, &actorTex);
-	actorCubeObj = new CObject(&program, actorMeshTest->GetVAO(), actorMeshTest->GetIndiceCount(), gameCamera, &actorCubeTex);
-	waterActor = new CObject(&program, actorPlane->GetVAO(), actorPlane->GetIndiceCount(), gameCamera, &actorWaterTex);
-	quadObj = new CObject(&program, actorPlane->GetVAO(), actorPlane->GetIndiceCount(), gameCamera, &actorCubeTex);
+	//waterActor = new CObject(&programs, actorPlane->GetVAO(), actorPlane->GetIndiceCount(), gameCamera, &actorWaterTex);
+	gameActor = new CActor(&programs, actorCube->GetVAO(), actorCube->GetIndiceCount(), gameCamera, &actorTex, audioSystem);
+	geomModel = new CGeometryModel(geomProgram, gameCamera);
 
 	// Create Skybox
 	gameSkybox = new CSkybox(&programSkybox, gameCamera);
-
-	// Labels
-	restartLabel = new CTextLabel("Press 'R' to restart", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(0.0f, 1.0f, 0.5f), 0.5f);
-
-	// Sets water location/rotaion
-	waterActor->objPosition.y -= 0.5;
-	waterActor->objAngleRotation = 180.0f;
-	waterActor->objRotaion = vec3(0.f, 180.f, 180.f);
-
-	// Sets quad location/rotaion
-	quadObj->objPosition.y -= 0.8;
-	quadObj->objAngleRotation = 180.0f;
-	quadObj->objRotaion = vec3(0.f, 180.f, 180.f);
-	quadObj->objScaleAmount = 2.0f;
-
 }
 
 CPlayScene::~CPlayScene()
@@ -88,10 +59,7 @@ void CPlayScene::Render()
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
 	//glEnable(GL_CULL_FACE);
-
-	restartLabel->Render(); // Call before scissor test
 	
-
 	// Enables and declares scissor rectangle
 	glEnable(GL_SCISSOR_TEST);
 	glScissor(0, 50, 1200, 500);
@@ -102,48 +70,23 @@ void CPlayScene::Render()
 		glPolygonMode(GL_FRONT, GL_LINE);
 	}
 
-	
-
-	// Stencil set up
-	glEnable(GL_STENCIL_TEST);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	glStencilMask(0xFF);
-	// Draw first actor
-	
-	//actorCubeTwoObj->Render();
-
-	// The second pass
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF); 
-	glStencilMask(0x00);
-	// Draw second actor
-
-	//actorCubeObj->Render();
-
-	// Disable stencil
-	glStencilMask(0x00); //disable writing to stencil mask
-	glDisable(GL_STENCIL_TEST); // Disable stencil test
-	glStencilMask(0xFF); // Enable writing again for next time
-
-	//quadObj->Render();
-
 	// Enable blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// Draw actors
 
+	// Draw actors
 	//waterActor->Render();
 
-	//tessModel->Render();
-	//geomModel->Render();
-
 	// Disable blending
-	glDisable(GL_BLEND);
+	//glDisable(GL_BLEND);
 
 
+	geomModel->Render();
 	gameSkybox->Render();
 	terrainMesh->Render();
+
 	gameActor->Render();
+
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 
@@ -155,6 +98,9 @@ void CPlayScene::Render()
 void CPlayScene::Update(GLfloat* deltaTime, ESceneManager* _currentScene)
 {
 	currentScene = _currentScene;
+	//gameCamera->FollowActor(geomModel->objPosition);
+	//geomModel->objPosition = glm::vec3(0.0f, -1.0f, 0.0f);
+
 	gameCamera->Update(*deltaTime);
 
 	// Wire Frame Check
@@ -166,21 +112,15 @@ void CPlayScene::Update(GLfloat* deltaTime, ESceneManager* _currentScene)
 	{
 		isWireFrame = false;
 	}
+
+	// Update Actors
+	geomModel->Update();
 	
 	gameSkybox->Update();
-	actorCubeTwoObj->Update();
-	waterActor->Update();
-	quadObj->Update();
-	actorCubeObj->Update();
+
 	terrainMesh->Update();
 	gameActor->Update(*deltaTime, gameInput, terrainMesh);
 	gameCamera->FollowActor(gameActor->objPosition);
-
-	// Resets every thing in game scene
-	if (gameInput->getKeyState('r') || gameInput->getKeyState('R'))
-	{
-		gameCamera->ResetCamPos(); // This is the only thing in the scene that changes
-	}
 }
 
 void CPlayScene::TextureGen(const char* textureLocation, GLuint* texture)
@@ -207,3 +147,24 @@ void CPlayScene::TextureGen(const char* textureLocation, GLuint* texture)
 }
 
 
+// STENCIL TEST CODE
+//// Stencil set up
+//glEnable(GL_STENCIL_TEST);
+//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+//glStencilMask(0xFF);
+//// Draw first actor
+//
+////actorCubeTwoObj->Render();
+//
+//// The second pass
+//glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+//glStencilMask(0x00);
+//// Draw second actor
+//
+////actorCubeObj->Render();
+//
+//// Disable stencil
+//glStencilMask(0x00); //disable writing to stencil mask
+//glDisable(GL_STENCIL_TEST); // Disable stencil test
+//glStencilMask(0xFF); // Enable writing again for next time

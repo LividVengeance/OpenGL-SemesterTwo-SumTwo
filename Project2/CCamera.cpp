@@ -23,7 +23,6 @@ CCamera::~CCamera()
 
 mat4 CCamera::CameraView()
 {
-	proj = glm::perspective(45.0f, halfScreenWidth / halfScreenHeight, 0.1f, 10000.0f);
 	return(view);
 }
 
@@ -36,9 +35,7 @@ mat4 CCamera::CameraView2D()
 
 void CCamera::Update(GLfloat deltaTime)
 {
-	//view = glm::lookAt(camPos, glm::vec3(0.0f, 0.0f, 0.0f), camUpDir);
 	view = glm::lookAt(camPos, objPosition, camUpDir);
-
 	proj = glm::perspective(45.0f, halfScreenWidth / halfScreenHeight, 0.1f, 10000.0f);
 }
 
@@ -89,9 +86,9 @@ void CCamera::ResetCamPos()
 
 void CCamera::FollowActor(glm::vec3 _objPosition)
 {
-	camPos.x = _objPosition.x + 2.0f;
-	camPos.y = _objPosition.y + 2.0f;
-	camPos.z = _objPosition.z + 2.0f;
+	camPos.x = _objPosition.x + 50.0f;
+	camPos.y = _objPosition.y + 50.0f;
+	camPos.z = _objPosition.z + 50.0f;
 
 	objPosition = _objPosition;
 }

@@ -35,6 +35,10 @@ public:
 	void CameraRadius(float newRadius);
 	void FollowActor(glm::vec3 _objPosition);
 
+	glm::vec3 LookDir() { return(camLookDir); }
+	glm::vec3 UpDir() { return(camUpDir); }
+	glm::mat4 GetView() { return(view); }
+
 private:
 	float halfScreenWidth = Utils::SCR_WIDTH * 0.5f;
 	float halfScreenHeight = Utils::SCR_HEIGHT * 0.5f;

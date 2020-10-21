@@ -46,6 +46,19 @@ private:
 
 	void BuildVBIB();
 
+	// Noise Memes
+	float RandomNoise(int x, int y);
+	float SmoothNoise(int x, int y);
+	float InterpolationNoise(float a, float b, float x);
+
+	float LinearInterpolate(float a, float b, float x);
+	float CosineInterpolate(float a, float b, float x);
+	float CubicInterpolate(float v0, float v1, float v2, float v3, float x);
+
+	float Noise(float x, float y);
+	float TotalNoisePerPoint(int x, int y);
+	void LoadNoise();
+
 	// Object Location
 	vec3 objPosition;
 	vec3 objScale;

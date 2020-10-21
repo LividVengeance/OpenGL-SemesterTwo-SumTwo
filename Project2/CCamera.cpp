@@ -86,9 +86,9 @@ void CCamera::ResetCamPos()
 
 void CCamera::FollowActor(glm::vec3 _objPosition)
 {
-	camPos.x = _objPosition.x + 50.0f;
-	camPos.y = _objPosition.y + 50.0f;
-	camPos.z = _objPosition.z + 50.0f;
+	camPos.x = _objPosition.x + 5.0f;
+	camPos.y = _objPosition.y + 5.0f;
+	camPos.z = _objPosition.z + 5.0f;
 
 	objPosition = _objPosition;
 }

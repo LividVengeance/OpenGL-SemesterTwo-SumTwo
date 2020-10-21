@@ -152,6 +152,8 @@
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CMainMenuScene.cpp" />
     <ClCompile Include="CObject.cpp" />
+    <ClCompile Include="CParticle.cpp" />
+    <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CPlane.cpp" />
     <ClCompile Include="CPlayScene.cpp" />
     <ClCompile Include="CPyramid.cpp" />
@@ -173,6 +175,8 @@
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CMainMenuScene.h" />
     <ClInclude Include="CObject.h" />
+    <ClInclude Include="CParticle.h" />
+    <ClInclude Include="CParticleSystem.h" />
     <ClInclude Include="CPlane.h" />
     <ClInclude Include="CPlayScene.h" />
     <ClInclude Include="CPyramid.h" />
@@ -199,6 +203,9 @@
     <None Include="Resources\Shaders\geometry.vs" />
     <None Include="Resources\Shaders\Model.fs" />
     <None Include="Resources\Shaders\Model.vs" />
+    <None Include="Resources\Shaders\particle.fs" />
+    <None Include="Resources\Shaders\particle.gs" />
+    <None Include="Resources\Shaders\particle.vs" />
     <None Include="Resources\Shaders\Phong - Ambient.fs" />
     <None Include="Resources\Shaders\Phong - Diffuse.fs" />
     <None Include="Resources\Shaders\Phong - Specular.fs" />

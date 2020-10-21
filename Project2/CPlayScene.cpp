@@ -31,7 +31,7 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 	TextureGen(cubeFileLocation, &actorCubeTex);
 
 	// Creates Mesh
-	actorCube = new CCube(3.0f);
+	actorCube = new CCube(.10f);
 	terrainMesh = new CTerrain(&programs, gameCamera, &actorCubeTex);
 
 	// Create Game Actors
@@ -40,6 +40,11 @@ CPlayScene::CPlayScene(CCamera* _gameCamera, CInput* _gameInput, FMOD::System* _
 
 	// Create Skybox
 	gameSkybox = new CSkybox(&programSkybox, gameCamera);
+
+	
+
+	// Particle System
+	particleSystem = new CParticleSystem(glm::vec3(0.0f, 0.0f, 0.0f), gameCamera, fileLocation);
 }
 
 CPlayScene::~CPlayScene()
@@ -54,6 +59,8 @@ void CPlayScene::Render()
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
 	//glEnable(GL_CULL_FACE);
+
+	particleSystem->Render(0.0165);
 	
 	// Enables and declares scissor rectangle
 	glEnable(GL_SCISSOR_TEST);
@@ -73,7 +80,7 @@ void CPlayScene::Render()
 	geomModel->Render();
 	gameSkybox->Render();
 	terrainMesh->Render();
-	gameActor->Render();
+	//gameActor->Render();
 
 	glPolygonMode(GL_FRONT, GL_FILL);
 
@@ -106,8 +113,8 @@ void CPlayScene::Update(GLfloat* deltaTime, ESceneManager* _currentScene)
 	gameSkybox->Update();
 
 	terrainMesh->Update();
-	gameActor->Update(*deltaTime, gameInput, terrainMesh);
-	gameCamera->FollowActor(gameActor->objPosition);
+	//gameActor->Update(*deltaTime, gameInput, terrainMesh);
+	//gameCamera->FollowActor(gameActor->objPosition);
 }
 
 void CPlayScene::TextureGen(const char* textureLocation, GLuint* texture)

@@ -27,7 +27,8 @@ CTerrain::CTerrain(GLint* _program, CCamera* _camera, GLuint* _texture)//, std::
 	numVertices = NumRows * NumCols;
 	numFaces = (NumRows - 1) * (NumCols - 1) * 2;
 
-	LoadHeightMap();
+	//LoadHeightMap();
+	LoadNoise();
 	Smooth();
 	BuildVBIB();
 	Update();
@@ -109,6 +110,17 @@ void CTerrain::LoadHeightMap()
 	for (UINT i = 0; i < NumRows * NumCols; ++i)
 	{
 		heightmap[i] = (float)in[i] * HeightScale + HeightOffset;
+	}
+}
+
+void CTerrain::LoadNoise()
+{
+	for (UINT i = 0; i < NumRows; ++i)
+	{
+		for (UINT j = 0; j < NumCols; ++j)
+		{
+			heightmap.push_back(TotalNoisePerPoint(i, j) * 50);
+		}
 	}
 }
 
@@ -303,4 +315,85 @@ void CTerrain::Update()
 
 	// Create model matrix to combine them
 	objModelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+}
+
+float CTerrain::RandomNoise(int x, int y)
+{
+	int n = x + y * 57;
+	n = (n << 13) ^ n;
+	int t = (n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff;
+	return(1.0 - double(t) * 0.931322574615478515625e-9);
+}
+
+float CTerrain::SmoothNoise(int x, int y)
+{
+	float corners;
+	float sides;
+	float center;
+
+	corners = (RandomNoise(x - 1, y - 1) + RandomNoise(x + 1, y - 1) + RandomNoise(x - 1, y + 1) + RandomNoise(x + 1, y + 1)) / 16;
+	sides = (RandomNoise(x - 1, y) + RandomNoise(x + 1, y) + RandomNoise(x, y - 1) + RandomNoise(x, y + 1)) / 8;
+	center = RandomNoise(x, y) / 4;
+	return(corners + sides + center);
+}
+
+float CTerrain::InterpolationNoise(float a, float b, float x)
+{
+	return(a * (1 - x) + b * x);
+}
+
+float CTerrain::LinearInterpolate(float a, float b, float x)
+{
+	return(a * (1 - x) + b * x);
+}
+
+float CTerrain::CosineInterpolate(float a, float b, float x)
+{
+	float ft = x * 3.1415927;
+	float f = (1 - cos(ft)) * 0.5;
+	return(a * (1 - f) + b * f);
+}
+
+float CTerrain::CubicInterpolate(float v0, float v1, float v2, float v3, float x)
+{
+	float P = (v3 - v2) - (v0 - v1);
+	float Q = (v0 - v1) - P;
+	float R = v2 - v0;
+	float S = v1;
+	return(P * pow(x, 2) + Q * pow(x, 2) + R * x + S);
+}
+
+float CTerrain::Noise(float x, float y)
+{
+	float fractional_X = x - int(x);
+	float fractional_Y = y - int(y);
+
+	// Smooths
+	float v1 = SmoothNoise(int(x), int(y));
+	float v2 = SmoothNoise(int(x) + 1, int(y));
+	float v3 = SmoothNoise(int(x), int(y) + 1);
+	float v4 = SmoothNoise(int(x) + 1, int(y) + 1);
+
+	// Interpolates
+	float i1 = InterpolationNoise(v1, v2, fractional_X);
+	float i2 = InterpolationNoise(v3, v4, fractional_X);
+
+	return(InterpolationNoise(i1, i2, fractional_Y));
+}
+
+float CTerrain::TotalNoisePerPoint(int x, int y)
+{
+	int octaves = 8;
+	float zoom = 20.0f;
+	float persistence = 0.5f;
+	float total = 0.0f;
+
+	for (int i = 0; i < octaves - 1; i++) {
+
+		float frequency = pow(2, i) / zoom;
+		float amplitude = pow(persistence, i);
+
+		total += Noise(x * frequency, y * frequency) * amplitude;
+	}
+	return(total);
 }

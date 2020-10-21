@@ -70,6 +70,9 @@
     <Filter Include="Resource Files\Tesselation">
       <UniqueIdentifier>{05d63eb4-db6a-4c1f-a2f4-bb0e5300396b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\ParticleSystem">
+      <UniqueIdentifier>{1f207376-1c07-4e9d-8ce8-f9b9a804e201}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CGameManager.cpp">
@@ -127,6 +130,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CTerrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -192,6 +201,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CTerrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -279,6 +294,15 @@
     </None>
     <None Include="Resources\Shaders\tesQuad.fs">
       <Filter>Resource Files\Tesselation</Filter>
+    </None>
+    <None Include="Resources\Shaders\particle.gs">
+      <Filter>Resource Files\ParticleSystem</Filter>
+    </None>
+    <None Include="Resources\Shaders\particle.vs">
+      <Filter>Resource Files\ParticleSystem</Filter>
+    </None>
+    <None Include="Resources\Shaders\particle.fs">
+      <Filter>Resource Files\ParticleSystem</Filter>
     </None>
   </ItemGroup>
 </Project>

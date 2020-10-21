@@ -18,6 +18,9 @@
 #include "Model.h"
 #include "CCube.h"
 
+// Particle System
+#include "CParticleSystem.h"
+
 
 class CPlayScene
 {
@@ -55,6 +58,9 @@ private:
 
 	// Objects
 	CActor* gameActor;
+
+	// Particle System
+	CParticleSystem* particleSystem;
 
 	// Textures
 	GLuint actorTex;

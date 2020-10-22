@@ -26,6 +26,12 @@ CTerrain::CTerrain(GLint* _program, CCamera* _camera, GLuint* _texture)//, std::
 
 	numVertices = NumRows * NumCols;
 	numFaces = (NumRows - 1) * (NumCols - 1) * 2;
+	
+	srand(time(NULL));
+	noiseNum0 = rand() % 90000;
+	noiseNum1 = rand() % 900000;
+	noiseNum2 = rand() % 9000000000;
+
 
 	//LoadHeightMap();
 	LoadNoise();
@@ -321,7 +327,10 @@ float CTerrain::RandomNoise(int x, int y)
 {
 	int n = x + y * 57;
 	n = (n << 13) ^ n;
-	int t = (n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff;
+
+	// 15731 + 789221 ) + 1376312589
+
+	int t = (n * (n * n * noiseNum0 + 789221) + 1376312589) & 0x7fffffff;
 	return(1.0 - double(t) * 0.931322574615478515625e-9);
 }
 
@@ -396,4 +405,18 @@ float CTerrain::TotalNoisePerPoint(int x, int y)
 		total += Noise(x * frequency, y * frequency) * amplitude;
 	}
 	return(total);
+}
+
+bool CTerrain::IsPrime(int _num)
+{
+	bool isPrime = true;
+
+	for (int i = 2; i <= _num / 2; i++)
+	{
+		if (_num % i == 0)
+		{
+			isPrime = false;
+		}
+	}
+	return(isPrime);
 }

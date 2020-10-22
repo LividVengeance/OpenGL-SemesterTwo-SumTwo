@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "glm.hpp"
+#include <stdlib.h>
+#include <time.h>  
 
 class CTerrain
 {
@@ -58,6 +60,13 @@ private:
 	float Noise(float x, float y);
 	float TotalNoisePerPoint(int x, int y);
 	void LoadNoise();
+
+	bool IsPrime(int _num);
+
+	// Noise num
+	int noiseNum0;
+	int noiseNum1;
+	int noiseNum2;
 
 	// Object Location
 	vec3 objPosition;

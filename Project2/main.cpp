@@ -15,6 +15,7 @@
 
 int main(int argc, char** argv)
 {
+
 	CGameManager mainGameManager(argc, argv);
 	mainGameManager.ManagerMain();
 
